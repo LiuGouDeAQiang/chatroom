@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>微聊</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f5f5f5;
+        }
+
+        .login-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-container h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .login-form input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .login-form button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .login-form button:hover {
+            background-color: #45a049;
+        }
+
+        .login-form .error-message {
+            color: #f44336;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="login-container">
+    <h1>微聊</h1>
+    <form class="login-form">
+        <div>
+            <input type="text" name="uid" placeholder="用户名">
+        </div>
+        <div>
+            <input type="password" name="password" placeholder="密码">
+        </div>
+        <div class="error-message" style="display: none;"></div>
+        <div>
+            <button type="submit"><i class="fas fa-sign-in-alt"></i> 用户登录</button>
+        </div>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $(".login-form").submit(function(event) {
+            event.preventDefault();
+
+            var uid = $("input[name='uid']").val();
+            var password = $("input[name='password']").val();
+
+            // 发送登录请求
+            $.ajax({
+                url: "/login",
+                type: "post",
+                data: {
+                    uid: uid,
+                    password: password
+                },
+                dataType: "json",
+                success: function(data) {
+                    if (data.code !== 0) {
+                        $(".error-message").text(data.message).show();
+                    } else {
+                        alert("已登录");
+                    }
+                },
+                error: function() {
+                    alert("请求失败");
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>
